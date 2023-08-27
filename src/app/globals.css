@@ -15,3 +15,7 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+.vertical-timeline--animate .vertical-timeline-element-content.is-hidden {
+  display: block !important;
+}

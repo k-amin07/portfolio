@@ -1,4 +1,4 @@
-import { addTimelineElement, getTimelineCount } from "@/lib/timeline";
+import { addTimelineElement, getTimeline, getTimelineCount } from "@/lib/timeline";
 import { NextResponse } from "next/server";
 
 export async function POST(request:Request) {
@@ -18,4 +18,8 @@ export async function POST(request:Request) {
         technologies,
         GPA
     }))
+}
+
+export async function GET() {
+    return NextResponse.json(await getTimeline())
 }
