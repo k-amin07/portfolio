@@ -11,20 +11,21 @@ type BlogPost = {
     content: ReactElement<any, string | JSXElementConstructor<any>>,
 }
 
-type TimelineElement = {
-    _id: string,
-    icon: string,
-    className: string,
+type Timeline = {
+    sr: number,
+    type: string,
     date: string,
     title: string,
     subtitle: string,
     description: string,
-    url?: string,
+    url: string,
+    technologies?: string[],
+    GPA?: number
 }
 
-type Timeline = {
-    elements: TimelineElement[],
-}
+// type Timeline = {
+//     elements: TimelineElement[],
+// }
 
 type Project = {
     name: string,
