@@ -12,6 +12,7 @@ type BlogPost = {
 }
 
 type TimelineElement = {
+    _id: string,
     icon: string,
     className: string,
     date: string,
