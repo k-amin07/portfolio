@@ -33,7 +33,7 @@ export default function Home() {
             />
           </div>
           <div className="mt-12 text-2xl text-center dark:text-white">
-            <h1 className="mb-2 text-2xl font-bold">Tech Stack:</h1>
+            <h1 className="mb-2 text-2xl font-bold">Tech Stack</h1>
             <div className="flex flex-row justify-center space-x-6 align-middle dark:text-white">
               <Tooltip title="NodeJS"><FaNode size={36} /></Tooltip>
               <Tooltip title="Typescript"><TbBrandTypescript size={36} /></Tooltip>

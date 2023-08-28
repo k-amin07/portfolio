@@ -12,12 +12,18 @@ import { Suspense } from 'react'
 import { useEffect, useState } from "react";
 import Loading from './loading';
 
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 export default function Page() {
     const [isLoading, setLoading] = useState(true)
     const [timeline, settimeline] = useState<Timeline[] | null>(null);
     useEffect(() => {
-        fetch(`/api/timeline`)
+        fetch(`/api/timeline`, {
+            method: 'GET',
+            headers: {
+                Authentication: API_KEY || ''
+            }
+        })
             .then((res) => res.json())
             .then((data) => {
                 settimeline(data);
