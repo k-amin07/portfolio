@@ -1,6 +1,7 @@
 import MyProfilePic from './components/MyProfilePic'
 import { FaLinkedin, FaGithub, FaEnvelope, FaMedium } from 'react-icons/fa'
 import Link from 'next/link'
+import Typewriter from './components/TypeWriter'
 
 export default function Home() {
   return (
@@ -23,7 +24,11 @@ export default function Home() {
             <Link href="https://medium.com/@khizaramin95" target="_blank"><FaMedium size={48} /></Link>
           </div>
           <div className="mt-12 mb-12 text-sm text-center dark:text-white">
-            <p className="pr-5 text-xs text-white ">Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!</p>
+            {/* <p className="pr-5 text-xs text-white ">Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!</p> */}
+            <Typewriter 
+              text="Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!"
+              delay={20}
+            />
           </div>
         </div>
       </div>
