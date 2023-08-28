@@ -8,8 +8,8 @@ type TypeWriterProps = {
 }
 export default function Typewriter ({ text, delay }: TypeWriterProps) {
     // const text = 'Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!';
-    const [currentText, setCurrentText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentText, setCurrentText] = useState(text[0]);
+    const [currentIndex, setCurrentIndex] = useState(1);
 
     useEffect(() => {
         if (currentIndex < text.length) {

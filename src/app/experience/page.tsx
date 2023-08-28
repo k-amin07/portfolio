@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import Loading from './loading';
 
 
-export default function page() {
+export default function Page() {
     const [isLoading, setLoading] = useState(true)
     const [timeline, settimeline] = useState<Timeline[] | null>(null);
     useEffect(() => {
