@@ -11,12 +11,12 @@ export default function Home() {
     <main className="px-6 mx-auto">
       <MyProfilePic />
       <div className="w-full display-flex flex-column justify-center align-center text-align-center">
-        <div className="mt-12 mb-12 text-4xl text-center dark:text-white">
+        <div className="mt-12 mb-6 text-4xl text-center dark:text-white">
           Hello 👋&nbsp;
           <span className="whitespace-nowrap">
             I&apos;m <span className="font-bold">Khizar</span>
           </span>
-          <div className='mt-12 mb-12 text-xl text-center dark:text-white'>
+          <div className='mt-12 mb-4 text-xl text-center dark:text-white'>
             <p>As a Software Engineer I thrive on solving intricate challenges while embracing perpetual learning. Lets connect @</p>
             <br />
           </div>
@@ -28,11 +28,11 @@ export default function Home() {
           </div>
           <div className="mt-12 mb-12 text-sm text-center dark:text-white">
             <Typewriter 
-              text="Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!"
+              text="&zwnj;Warning: Risk of getting stuck in an infinite loop! The navbar on the top points to my Resume which points back to this website. Proceed with caution!"
               delay={10}
             />
           </div>
-          <div className="mt-12 mb-12 text-2xl text-center dark:text-white">
+          <div className="mt-12 text-2xl text-center dark:text-white">
             <h1 className="mb-2 text-2xl font-bold">Tech Stack:</h1>
             <div className="flex flex-row justify-center space-x-6 align-middle dark:text-white">
               <Tooltip title="NodeJS"><FaNode size={36} /></Tooltip>

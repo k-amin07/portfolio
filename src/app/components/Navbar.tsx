@@ -9,7 +9,7 @@ export default function Navbar() {
     return (
         <nav className="shadow-sm fixed sticky w-full z-10">
             <div className="w-full">
-                <div className="flex items-center h-20 w-full">
+                <div className="flex items-center h-16 w-full">
                     <div className="flex items-center justify-between mx-20 w-full">
                         <div className="flex items-center justify-center flex-shrink-0">
                             <h1 className="font-bold text-xl cursor-pointer">
