@@ -8,7 +8,7 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const nodeRef = React.useRef(null)
     return (
-        <nav className="shadow-sm fixed sticky w-full z-10">
+        <nav className="shadow-sm fixed sticky w-full z-10 my-2">
             <div className="w-full">
                 <div className="flex items-center h-16 w-full">
                     <div className="flex items-center justify-between mx-20 w-full">
@@ -48,7 +48,7 @@ export default function Navbar() {
             >
                 {(ref) => (
                     <div className="md:hidden" id="mobile-menu">
-                        <div ref={nodeRef} className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        <div ref={nodeRef} className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border border-sky-500 mx-12">
                             <ul className="flex flex-col items-center space-y-4">
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/projects" onClick={()=>{setIsOpen(!isOpen)}}>Projects</Link> </li>
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/experience" onClick={()=>{setIsOpen(!isOpen)}}>Experience</Link></li>
