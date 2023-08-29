@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
     const bearer = request.headers.get("Authentication")
 
     if ((origin && !allowedOrigins.includes(origin)) || !bearer || bearer !== API_KEY) {
-        return new NextResponse(null, {
+        return NextResponse.json({ message: 'Authentication Failed' }, {
             status: 400,
             statusText: "Bad Request",
             headers: {

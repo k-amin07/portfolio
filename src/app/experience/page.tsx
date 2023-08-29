@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import 'react-vertical-timeline-component/style.min.css'
 
 import StarIcon from '@mui/icons-material/Star'
@@ -61,11 +62,19 @@ export default function Page() {
                                 key={item.sr.toString()}
                             >
                                 <div style={{ textDecoration: "none", color: "black", textAlign: "center" }}>
-                                    <Link href={item.url} target='_blank' rel='noreferrer'>
-                                        <h2 className={item.type.toLowerCase() === 'work' ? 'vertical-timeline-element--work' : 'vertical-timeline-element--education'}>{item.title}</h2>
+                                    <h2 className={item.type.toLowerCase() === 'work' ? 'vertical-timeline-element--work' : 'vertical-timeline-element--education'}>
+                                        <div className='flex flex-row justify-center'>
+                                            {item.title}&nbsp;
+                                            {item.url ? <Link href={item.url} target='_blank' rel='noreferrer'>
+                                                <FaExternalLinkAlt size={8} />
+                                            </Link> : null}
+                                        </div>
+                                    </h2>
+                                    <Link href={'/experience/' + item._id}>
                                         <h4 className={item.type.toLowerCase() === 'work' ? 'vertical-timeline-element--work' : 'vertical-timeline-element--education'}>{item.subtitle}</h4>
                                         <p>{item.description}</p>
                                     </Link>
+                                    
                                 </div>
                             </VerticalTimelineElement>
 

@@ -19,3 +19,14 @@ export async function addTimelineElement (element: Timeline): Promise<Timeline> 
     await dbConnect();
     return await TimelineModel.create(element);
 }
+
+export async function getTimeLineIds(){
+    await dbConnect();
+    return await TimelineModel.find().select('_id').exec();
+} 
+
+export async function getTimelineElementById(id: string): Promise<Timeline | null> {
+    await dbConnect();
+    console.log(id)
+    return await TimelineModel.findById(id).exec();
+}
