@@ -54,8 +54,6 @@ export async function getTimelinePostbyId(_id: string) {
 export async function addTimelinePost(content: string, timelineId: string) {
     await dbConnect();
     const tlData = await getTimelineElementById(timelineId)
-
-    console.log(tlData)
     
     const createdPost = await TimelinePostModel.create({
         timelineId,

@@ -27,6 +27,5 @@ export async function getTimeLineIds(){
 
 export async function getTimelineElementById(id: string): Promise<Timeline | null> {
     await dbConnect();
-    console.log(id)
     return await TimelineModel.findById(id).exec();
 }

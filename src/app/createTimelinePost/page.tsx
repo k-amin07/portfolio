@@ -20,7 +20,6 @@ export default function CreateTimelinePost() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const { content, key, timelineId } = data
-        console.log({timelineId})
         // Send data to API route 
         const res = await fetch('/api/timelinePost', {
             method: 'POST',
@@ -30,13 +29,10 @@ export default function CreateTimelinePost() {
             },
             body: JSON.stringify({
                 timelineId,
-                // meta: `---\n${meta}\n---`,
                 content
             })
         })
-        console.log(res)
-        const result = await res.json()
-        console.log(result)
+        await res.json()
 
         // Navigate to home
         if(res.ok){
@@ -54,13 +50,10 @@ export default function CreateTimelinePost() {
             [name]: e.target.value
         }))
     }
-    console.log([...Object.values(data)])
+
     const canSave = [...Object.values(data)].every(Boolean)
     const formContent = (
         <form onSubmit={handleSubmit} className="flex flex-col mx-auto max-w-3xl p-6">
-
-            {/* <h1 className="text-4xl mb-4">Create Post</h1> */}
-
             <label className="text-2xl mb-1" htmlFor="Key">API Key:</label>
             <input
                 className="p-3 mb-6 text-2xl rounded-2xl text-black"
@@ -68,7 +61,6 @@ export default function CreateTimelinePost() {
                 id="key"
                 name="key"
                 placeholder="API Key"
-                // pattern="([A-Z])[\w+.]{1,}"
                 value={data.key}
                 onChange={handleChange}
                 autoFocus
@@ -81,35 +73,10 @@ export default function CreateTimelinePost() {
                 id="tlId"
                 name="timelineId"
                 placeholder="Timeline Id"
-                // pattern="([A-Z])[\w+.]{1,}"
                 value={data.timelineId}
                 onChange={handleChange}
                 autoFocus
             />
-
-            {/* <label className="text-2xl mb-1" htmlFor="meta">Meta:</label>
-            <textarea
-                className="p-3 mb-6 text-2xl rounded-2xl text-black"
-                id="meta"
-                name="meta"
-                rows={4}
-                cols={33}
-                // placeholder={"---\ntitle: \nsubtitle: \ndate: \n---"}
-                // pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                value={data.meta || "title: \nsubtitle: \ndate: "}
-                onChange={handleChange}
-            /> */}
-
-            {/* <label className="text-2xl mb-1" htmlFor="date">Date:</label>
-            <input
-                className="p-3 mb-6 text-2xl rounded-2xl text-black"
-                type="text"
-                id="date"
-                name="date"
-                placeholder="Aug 2021 - Present"
-                value={data.date}
-                onChange={handleChange}
-            /> */}
 
             <label className="text-2xl mb-1" htmlFor="post">Post:</label>
             <textarea
