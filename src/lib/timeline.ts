@@ -3,7 +3,7 @@ import dbConnect from "./dbConnect";
 
 export async function getTimeline(): Promise<Timeline[] | undefined> {
     await dbConnect();
-    let timeLine = await TimelineModel.find({});
+    let timeLine:Timeline[] = await TimelineModel.find({});
     timeLine.sort((a, b) => {
         return b.sr - a.sr;
     })

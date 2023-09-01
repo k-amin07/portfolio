@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 const APP_NAME = "Portfolio";
 const APP_DEFAULT_TITLE = "Khizar Amin";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
+const APP_TITLE_TEMPLATE = `%s - ${APP_NAME}`;
 const APP_DESCRIPTION = "Portfolio created using NextJS";
 
 export const metadata: Metadata = {

@@ -48,7 +48,7 @@ export default async function page({params: {_id}}: Props) {
             <p className="mt-0 text-sm">{meta.date}</p>
             <article>{content}</article>
             <p className="mb-10">
-                <Link href="/">Back to Home</Link>
+                <Link href="/experience">Back to Experience</Link>
             </p>
         </div>
     )

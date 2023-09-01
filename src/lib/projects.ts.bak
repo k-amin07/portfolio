@@ -1,0 +1,10 @@
+import dbConnect from "./dbConnect";
+
+export async function getProjects(): Promise<Project[] | undefined> {
+    await dbConnect();
+    // let projects = await ProjectModel.find({});
+    // projects.sort((a, b) => {
+    //     return b.sr - a.sr;
+    // })
+    // return projects;
+}
