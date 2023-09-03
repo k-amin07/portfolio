@@ -1,4 +1,6 @@
-import mongoose from 'mongoose'
+import mongoose, { mongo } from 'mongoose'
+const { GridFSBucket } = require("mongodb");
+
 
 const MONGODB_URI = process.env.MONGODB_URI || ''
 
@@ -31,6 +33,17 @@ export default async function dbConnect() {
     }
     cached.conn = await cached.promise
     return cached.conn
+}
+
+export async function getBucket() {
+    if(cached.bucket) {
+        return cached.bucket
+    }
+    await dbConnect()
+    cached.bucket = new GridFSBucket(mongoose.connection, {
+        bucketName: 'images'
+    })
+    return cached.bucket
 }
 
 export async function generateId() {

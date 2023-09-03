@@ -60,16 +60,6 @@ export default function CreateTimelineElement() {
     }
 
     const canSave = [...Object.values(data)].every(Boolean)
-    
-    const template = {
-        "type": "work",
-        "date": "Feb 2022 - Present",
-        "subtitle": "Backend Engineer",
-        "title": "Bridgelinx",
-        "description": "Developed the backend for Bridgelinx, Pakistan's first startup to raise $10M in seed funding",
-        "url": "https://www.bridgelinxpk.com",
-        "technologies": ["NodeJS", "GraphQl", "Neo4j"]
-    }
 
     const formContent = (
         <form onSubmit={handleSubmit} className="flex flex-col mx-auto max-w-3xl p-6 dark:text-white">

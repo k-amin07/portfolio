@@ -11,9 +11,9 @@ export default function CustomImage({ src, alt, priority }: Props) {
     return (
         <div className="w-full h-full">
             <Image className="rounded-lg max:auto"
-                src={src}
+                src={`/api/uploads/${src}`}
                 alt={alt}
-                width={650}
+                width={720}
                 height={650}
                 priority={prrty}
             />
