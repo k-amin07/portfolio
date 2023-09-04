@@ -14,8 +14,7 @@ export async function generateMetadata() {
     }
     return {
         title: "Experience",
-        description: "Khizar Amin's experience",
-
+        description: "Khizar's Experience",
     }
 }
 
