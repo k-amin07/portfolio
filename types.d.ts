@@ -38,9 +38,17 @@ type TimelinePost = {
     content: ReactElement<any, string | JSXElementConstructor<any>>,
 }
 
+type ProjectMeta = {
+    _id?: string,
+    title: string,
+    summary: string,
+    date: string,
+    priority: number,
+    coverImage?: string,
+}
+
 type Project = {
-    name: string,
-    icon: string,
-    technologies: string[],
-    git?: string,
+   _id?: string,
+   meta: ProjectMeta,
+   content: ReactElement<any, string | JSXElementConstructor<any>>,
 }

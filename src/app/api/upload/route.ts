@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import { Readable } from "stream";
 import { getBucket } from "@/lib/dbConnect";
 
-
+// this route is not needed as I am now using server forms for /uploadImage
 export async function POST(request:Request) {
     const data = await request.formData();
     const bucket = await getBucket();
