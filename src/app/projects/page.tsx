@@ -24,10 +24,10 @@ export default async function Page() {
 
     return (
         // <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 justify-between">
-        <div className="flex flex-row gap-1 flex-wrap">
+        <div className="flex flex-row gap-1 flex-wrap justify-center">
             {projects.map((project) => {
                 return (
-                    <div className="mx-auto px-4 py-4 max-w-xl">
+                    <div className="px-4 py-4 max-w-xl mx-2" key={project?._id}>
                         <div className="bg-white shadow-2xl rounded-lg mb-6 tracking-wide" >
                             <div className="md:flex-shrink-0">
                                 <Image
