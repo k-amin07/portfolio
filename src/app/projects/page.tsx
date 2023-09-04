@@ -36,6 +36,7 @@ export default async function Page() {
                                     className="w-full h-64 rounded-lg rounded-b-none"
                                     width={1920}
                                     height={0}
+                                    priority={true}
                                 />
                             </div>
                             <div className="px-4 py-2 mt-2">
