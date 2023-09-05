@@ -18,7 +18,7 @@ export async function generateMetadata() {
 
 export default async function Page() {
     const projects = await getProjectMeta()
-    if(!projects) {
+    if(!projects?.length) {
         return notFound()
     }
 
@@ -43,8 +43,7 @@ export default async function Page() {
                                 <Link href={"/projects/" + project?._id}>
                                     <h2 className="font-bold text-2xl text-gray-800 tracking-normal truncate">{project?.meta.title}</h2>
                                     <p className="h-28 max-h-22 text-sm text-gray-700 mr-1 overflow-hidden">
-                                        {project?.meta.summary} asdjosjdpoasjdopsa jasodj aposdj  asojdpao sjdoaj asjod poasjdoasd ojas dopja osdj sadjo asopd saojdosadjaso jaosdjapsodjo pasjdj aoj nnnnn mmm mmmmm mmmmmmm mmmmmqqq qqqq
-                                        asdjosjdpoasjdopsa jasodj aposdj  asojdpao sjdoaj asjod poasjdoasd ojas dopja osdj sadjo asopd saojdosadjaso jaosdjapsodjo pasjdj aoj nnnnn mmm mmmmm mmmmmmm mmmmmqqq qqqq asdjosjdpoasjdopsa jasodj aposdj  asojdpao sjdoaj asjod poasjdoasd ojas dopja osdj sadjo asopd saojdosadjaso jaosdjapsodjo pasjdj aoj nnnnn mmm mmmmm mmmmmmm mmmmmqqq qqqq
+                                        {project?.meta.summary}
                                     </p>
                                 </Link>
                                 <div className="flex justify-end items-center -ml-3 my-3">
