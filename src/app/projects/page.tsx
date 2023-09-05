@@ -22,6 +22,8 @@ export default async function Page() {
         return notFound()
     }
 
+    projects.sort((a, b) => (b?.meta?.priority || 0) - (a?.meta?.priority || 0))
+
     return (
         // <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 justify-between">
         <div className="flex flex-row gap-1 flex-wrap justify-center">
