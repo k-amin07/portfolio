@@ -52,7 +52,7 @@ export default function Navbar() {
                             <ul className="flex flex-col items-center space-y-4">
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/projects" onClick={()=>{setIsOpen(!isOpen)}}>Projects</Link> </li>
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/experience" onClick={()=>{setIsOpen(!isOpen)}}>Experience</Link></li>
-                                <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href='https://drive.google.com/file/d/1jYIkj4xz3PWRaWBZT2bY1Gim_uKvdIys/view?usp=sharing' target="_blank" onClick={()=>{setIsOpen(!isOpen)}}>Resume</Link></li>
+                                <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href={process.env.RESUME_LINK||''} target="_blank" onClick={()=>{setIsOpen(!isOpen)}}>Resume</Link></li>
                             </ul>
                         </div>
                     </div>
