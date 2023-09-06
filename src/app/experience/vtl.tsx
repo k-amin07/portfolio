@@ -39,7 +39,9 @@ export default function Vtl({timeline}: Props) {
                                 </div>
                             </h2>
                             <Link href={'/experience/' + item._id?.toString()}>
-                                <h4 className={item.type.toLowerCase() === 'work' ? 'vertical-timeline-element--work' : 'vertical-timeline-element--education'}>{item.subtitle}</h4>
+                                <h4 className={item.type.toLowerCase() === 'work' ? 'vertical-timeline-element--work' : 'vertical-timeline-element--education'}>
+                                    {item.GPA ? `${item.subtitle} - (GPA: ${item.GPA})` : item.subtitle}
+                                </h4>
                                 <p>{item.description}</p>
                             </Link>
 
