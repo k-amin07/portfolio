@@ -47,7 +47,8 @@ export default async function Page() {
                 id="message"
                 name="content"
                 placeholder="Your message here..."
-                rows={5}
+                defaultValue={`<CustomImage src="" alt="" />\n`}
+                rows={10}
                 cols={33}
             />
 

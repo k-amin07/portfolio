@@ -83,7 +83,7 @@ export default async function Page() {
                 id="content"
                 name="content"
                 placeholder="Your message here..."
-                rows={5}
+                rows={10}
                 cols={33}
             />
             <button

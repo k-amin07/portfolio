@@ -11,7 +11,7 @@ export default async function Page() {
             throw new Error('Invalid API Key')
         }
         const count = await getTimelineCount() + 1;
-        await addTimelineElement({
+        const tl_element = await addTimelineElement({
             sr: count,
             type: formData.get('type')?.toString()!,
             date: formData.get('date')?.toString()!,
@@ -19,11 +19,12 @@ export default async function Page() {
             subtitle: formData.get('subtitle')?.toString()!,
             description: formData.get('description')?.toString()!,
             url: formData.get('url')?.toString()!,
-            technologies: formData.get('technologies')?.toString()?.split(',').map((tech: string) => tech.trim())
+            technologies: formData.get('technologies')?.toString()?.split(',').map((tech: string) => tech.trim()),
+            GPA: formData.get('gpa') ? parseFloat(formData.get('gpa')?.toString()!) : undefined,
             
         })
         revalidatePath('/experience')
-        redirect(`/server_forms/createTimelinePost`, RedirectType.replace)
+        redirect(`/experience/${tl_element._id}`, RedirectType.replace)
     }
 
     return(
@@ -101,7 +102,15 @@ export default async function Page() {
                 rows={5}
                 cols={33}
             />
-
+            <label className="text-2xl mb-1" htmlFor="gpa">GPA:</label>
+            <input
+                className="p-3 mb-6 text-2xl rounded-2xl text-black"
+                type="text"
+                id="gpa"
+                name="gpa"
+                placeholder="4.0"
+                autoFocus
+            />
             <button
                 type="submit"
                 className="p-3 mb-6 text-2xl rounded-2xl text-black border-solid border-white border-2 max-w-sm bg-slate-400 hover:cursor-pointer hover:bg-slate-300 disabled:hidden"

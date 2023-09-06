@@ -43,7 +43,7 @@ export async function getTimelinePostbyId(_id: string) {
         _id: _id,
         meta: {
             title: frontmatter.title,
-            subtitle: frontmatter.date,
+            subtitle: post.meta.subtitle,
             date: frontmatter.date,
         },
         content: content

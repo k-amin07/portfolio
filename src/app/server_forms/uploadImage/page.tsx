@@ -28,7 +28,7 @@ export default async function Page() {
                 files.push(filename)
             }
         }
-        redirect('/',RedirectType.replace)
+        redirect(`/api/uploads/${files[0]}`,RedirectType.replace)
     }
     return (
         <form action={create} className="flex flex-col mx-auto max-w-3xl p-6 dark:text-white">
