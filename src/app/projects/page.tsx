@@ -29,7 +29,7 @@ export default async function Page() {
         <div className="flex flex-row gap-1 flex-wrap justify-center">
             {projects.map((project) => {
                 return (
-                    <div className="px-4 py-4 max-w-xl mx-2" key={project?._id}>
+                    <div className="px-4 py-4 max-w-xl mx-2 w-full" key={project?._id}>
                         <div className="bg-white shadow-2xl rounded-lg mb-6 tracking-wide" >
                             <div className="md:flex-shrink-0">
                                 <Image

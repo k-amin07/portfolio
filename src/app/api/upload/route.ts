@@ -11,7 +11,6 @@ export async function POST(request:Request) {
     let files = []
     for (const entry of Array.from(data.entries())) {
         const [key, value] = entry;
-        console.log(typeof value)
         const isFile = typeof value == "object";
         if (isFile) {
             const blob = value as Blob;
