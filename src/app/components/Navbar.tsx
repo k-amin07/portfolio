@@ -23,7 +23,7 @@ export default function Navbar() {
                             <div className="flex items-baseline space-x-4 ml-10">
                                 <Link className="text-white/90 no-underline hover:text-white font-bold" href="/projects" >Projects</Link>
                                 <Link className="text-white/90 no-underline hover:text-white font-bold" href="/experience" >Experience</Link>
-                                <Link className="text-white/90 no-underline hover:text-white font-bold" href='https://drive.google.com/file/d/1jYIkj4xz3PWRaWBZT2bY1Gim_uKvdIys/view?usp=sharing' target="_blank">Resume</Link>
+                                <Link className="text-white/90 no-underline hover:text-white font-bold" href={process.env.RESUME_LINK||''} target="_blank">Resume</Link>
                             </div>
                         </div>
                     </div>
