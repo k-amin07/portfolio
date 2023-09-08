@@ -13,8 +13,12 @@ export async function generateMetadata() {
         }
     }
     return {
-        title: "Experience",
-        description: "Khizar's Experience",
+        title: "Khizar Amin - Experience",
+        description: "Khizar Amin's Experience",
+        openGraph: {
+            title: "Khizar Amin - Experience",
+            description: "Khizar Amin's Experience",
+        },
     }
 }
 

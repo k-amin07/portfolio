@@ -11,8 +11,12 @@ export async function generateMetadata() {
         }
     }
     return {
-        title: "Projects",
-        description: "Khizar's Projects"
+        title: "Khizar Amin - Projects",
+        description: 'Khizar Amin\'s Projects',
+        openGraph: {
+            title: "Khizar Amin - Projects",
+            description: 'Khizar Amin\'s Projects',
+        },
     }
 }
 
