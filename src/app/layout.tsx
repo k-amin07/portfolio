@@ -5,18 +5,13 @@ import Navbar from './components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const APP_NAME = "Portfolio";
-const APP_DEFAULT_TITLE = "Khizar Amin";
-const APP_TITLE_TEMPLATE = `%s - ${APP_NAME}`;
-const APP_DESCRIPTION = "Portfolio created using NextJS";
-
-export const metadata: Metadata = {
-  applicationName: APP_NAME,
-  title: {
-    default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
+export const metadata:Metadata = {
+  title: 'Khizar Amin',
+  description: 'Khizar Amin\'s Portfolio',
+  openGraph: {
+    title: 'Khizar Amin',
+    description: 'Khizar Amin\'s Portfolio',
   },
-  description: APP_DESCRIPTION,
 }
 
 export default function RootLayout({

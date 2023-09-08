@@ -30,9 +30,12 @@ export async function generateMetadata({ params: { _id } }: Props) {
         }
     }
     return {
-        title: post.meta.title,
+        title: `Khizar Amin - ${post.meta.title}`,
         description: post.meta.subtitle,
-
+        openGraph: {
+            title: `Khizar Amin - ${post.meta.title}`,
+            description: post.meta.subtitle,
+        },
     }
 }
 

@@ -26,12 +26,17 @@ export async function generateMetadata({params: {_id}}: Props) {
     const project = await getProjectById(_id)
     if(!project) {
         return {
-            title: "No Projects Found"
+            title: "Page Not Found"
         }
     }
+
     return {
-        title: "Projects",
-        description: "Khizar's Projects"
+        title: `Khizar Amin - ${project?.meta.title}`,
+        description: 'Khizar Amin\'s Projects',
+        openGraph: {
+            title: `Khizar Amin - ${project?.meta.title}`,
+            description: 'Khizar Amin\'s Projects',
+        },
     }
 }
 

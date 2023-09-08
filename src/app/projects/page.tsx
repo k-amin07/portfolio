@@ -7,12 +7,16 @@ export async function generateMetadata() {
     const projects = await getProjectMeta()
     if(!projects) {
         return {
-            title: "No Projects Found"
+            title: "Page Not Found"
         }
     }
     return {
-        title: "Projects",
-        description: "Khizar's Projects"
+        title: "Khizar Amin - Projects",
+        description: 'Khizar Amin\'s Projects',
+        openGraph: {
+            title: "Khizar Amin - Projects",
+            description: 'Khizar Amin\'s Projects',
+        },
     }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import 'react-vertical-timeline-component/style.min.css'
@@ -12,14 +12,40 @@ import Link from 'next/link';
 import { Suspense } from 'react'
 import Loading from './loading';
 
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+
+import { useState } from 'react';
+import { Alert } from '@mui/material';
+
 type Props = {
     timeline: Timeline[]
 }
 
+interface State extends SnackbarOrigin {
+    open: boolean;
+}
+
 export default function Vtl({timeline}: Props) {
+    const [state, setState] = useState<State>({
+        open: true,
+        vertical: 'top',
+        horizontal: 'right',
+    });
+    const { vertical, horizontal, open } = state;
     return (
         <Suspense fallback={<Loading/>}>
         <div>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                onClose={() => setState({ ...state, open: false })}
+                key={vertical + horizontal}
+                autoHideDuration={2000}
+            >
+                <Alert severity="info" className='my-20'>
+                    Click on the item description to learn more!
+                </Alert>
+            </Snackbar>
             <VerticalTimeline lineColor='#3e497a' className='dark:text-white'>
                 {timeline.map((item: Timeline) => {
                     return <VerticalTimelineElement
