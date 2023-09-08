@@ -26,7 +26,7 @@ export async function generateMetadata({params: {_id}}: Props) {
     const project = await getProjectById(_id)
     if(!project) {
         return {
-            title: "No Projects Found"
+            title: "Page Not Found"
         }
     }
 

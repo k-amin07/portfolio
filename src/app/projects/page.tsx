@@ -7,7 +7,7 @@ export async function generateMetadata() {
     const projects = await getProjectMeta()
     if(!projects) {
         return {
-            title: "No Projects Found"
+            title: "Page Not Found"
         }
     }
     return {
