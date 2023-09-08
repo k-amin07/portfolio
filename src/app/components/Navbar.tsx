@@ -7,6 +7,7 @@ import Link from "next/link"
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const nodeRef = React.useRef(null)
+    const resumeURL = process.env.NEXT_PUBLIC_RESUME_LINK || ''
     return (
         <nav className="shadow-sm fixed sticky w-full z-10 my-2">
             <div className="w-full">
@@ -23,7 +24,7 @@ export default function Navbar() {
                             <div className="flex items-baseline space-x-4 ml-10">
                                 <Link className="text-white/90 no-underline hover:text-white font-bold" href="/projects" >Projects</Link>
                                 <Link className="text-white/90 no-underline hover:text-white font-bold" href="/experience" >Experience</Link>
-                                <Link className="text-white/90 no-underline hover:text-white font-bold" href={process.env.RESUME_LINK||''} target="_blank">Resume</Link>
+                                <Link className="text-white/90 no-underline hover:text-white font-bold" href={resumeURL} target="_blank">Resume</Link>
                             </div>
                         </div>
                     </div>
@@ -52,7 +53,7 @@ export default function Navbar() {
                             <ul className="flex flex-col items-center space-y-4">
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/projects" onClick={()=>{setIsOpen(!isOpen)}}>Projects</Link> </li>
                                 <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href="/experience" onClick={()=>{setIsOpen(!isOpen)}}>Experience</Link></li>
-                                <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href={process.env.RESUME_LINK||''} target="_blank" onClick={()=>{setIsOpen(!isOpen)}}>Resume</Link></li>
+                                <li> <Link className="text-white/90 no-underline hover:text-white font-bold" href={resumeURL} target="_blank" >Resume</Link></li>
                             </ul>
                         </div>
                     </div>
