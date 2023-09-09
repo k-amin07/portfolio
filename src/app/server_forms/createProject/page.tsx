@@ -14,15 +14,16 @@ export default async function Page() {
             meta: {
                 title: formData.get('title')?.toString()!,
                 summary: formData.get('summary')?.toString()!,
-                date: formData.get('date')?.toString()!,
-                priority: parseInt(formData.get('priority')?.toString()!),
-                coverImage: formData.get('coverImage')?.toString()!,   
+                date: formData.get('date')!.toString()!,
+                priority: parseInt(formData.get('priority')!.toString()!),
+                coverImage: formData.get('coverImage')!.toString()!,
+                tags: formData.get('tags')!.toString()!.split(',').map(tag => tag.trim())
             },
-            content: formData.get('content')?.toString()!,
+            content: formData.get('content')!.toString()!,
         })
         
         revalidatePath('/projects')
-        redirect(`/projects/${project._id}`, RedirectType.replace)
+        redirect(`/projects/id/${project._id}`, RedirectType.replace)
     }
     return (
         <form action={create} className="flex flex-col mx-auto max-w-3xl p-6 dark:text-white">
@@ -85,6 +86,14 @@ export default async function Page() {
                 placeholder="Your message here..."
                 rows={10}
                 cols={33}
+            />
+            <label className="text-2xl mb-1" htmlFor="tags">Tags:</label>
+            <input
+                className="p-3 mb-6 text-2xl rounded-2xl text-black"
+                type="text"
+                id="tags"
+                name="tags"
+                placeholder="NodeJS, GraphQl, Neo4j"
             />
             <button
                 type="submit"

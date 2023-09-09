@@ -45,6 +45,7 @@ type ProjectMeta = {
     date: string,
     priority: number,
     coverImage?: string,
+    tags: string[],
 }
 
 type Project = {

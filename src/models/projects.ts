@@ -11,6 +11,7 @@ const ProjectSchema = new Schema<Project, ProjectModelType>({
         date: String,
         priority: Number,
         coverImage: String,
+        tags: [String],
     },
     content: String,
 })
