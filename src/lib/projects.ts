@@ -22,9 +22,15 @@ export async function getProjectCount(): Promise<number> {
     return await ProjectModel.countDocuments({}).exec();
 }
 
-export async function getProjectMeta(): Promise<Partial<Project[]> | undefined> {
+export async function getProjectMeta(tag?:String): Promise<Partial<Project[]> | undefined> {
     await dbConnect();
-    return await ProjectModel.find({}).select('_id meta').exec();
+    let projects
+    if(tag){
+        projects = await ProjectModel.find({ "meta.tags": tag }).select('_id meta').exec();
+    } else {
+        projects = await ProjectModel.find({}).select('_id meta').exec();
+    }
+    return projects
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
@@ -34,7 +40,7 @@ export async function getProjectById(id: string): Promise<Project | null> {
         return null
     }
 
-    const mdxSource = `---\ntitle: ${project.meta.title}\ndate: ${project.meta.date}\n---\n\n${project.content}`
+    const mdxSource = `---\ntitle: ${project.meta.title}\ndate: ${project.meta.date}\ntags: ${project.meta.tags}\n---\n\n${project.content}`
 
     
     const { frontmatter, content } = await compileMDX<{ title: string, date: string, tags: string[] }>({
@@ -62,7 +68,8 @@ export async function getProjectById(id: string): Promise<Project | null> {
             summary: project.meta.summary,
             date: moment(frontmatter.date).format("MMMM YYYY"),
             priority: project.meta.priority,
-            coverImage: project.meta.coverImage
+            coverImage: project.meta.coverImage,
+            tags: frontmatter.tags
         },
         content: content
     }

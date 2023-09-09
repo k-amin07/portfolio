@@ -12,6 +12,7 @@ export const metadata:Metadata = {
     title: 'Khizar Amin',
     description: 'Khizar Amin\'s Portfolio',
   },
+  metadataBase: new URL(process.env.SITE_URL!)
 }
 
 export default function RootLayout({

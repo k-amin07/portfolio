@@ -1,6 +1,5 @@
 import { getProjectById, getProjectMeta } from "@/lib/projects";
 import NotFound from "./not-found";
-import Link from "next/link";
 import MdxDisplay from "@/app/components/MdxDisplay";
 
 
