@@ -6,13 +6,19 @@ import Navbar from './components/Navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata:Metadata = {
+  applicationName: 'Khizar Amin',
   title: 'Khizar Amin',
   description: 'Khizar Amin\'s Portfolio',
   openGraph: {
     title: 'Khizar Amin',
     description: 'Khizar Amin\'s Portfolio',
   },
-  metadataBase: new URL(process.env.SITE_URL!)
+  metadataBase: new URL(process.env.SITE_URL!),
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
