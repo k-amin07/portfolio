@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function NotFound() {
     return (
@@ -8,7 +8,7 @@ export default function NotFound() {
                 <p className="text-4xl font-bold text-gray-700 capitalize tracking-wide mt-8">Page under construction!</p>
                 <p className="text-xl text-gray-700 uppercase mt-4">Please check back soon</p>
                 <br />
-                <Link href="/projects">Back to Projects</Link>
+                <Link href="/">Back to Home</Link>
             </div>
         </div>
     )
