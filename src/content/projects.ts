@@ -5,7 +5,7 @@ export const projects: Project[] = [
   {
     title: "Raft consensus and a replicated key-value store",
     summary:
-      "Raft in Go from the paper: leader election, log replication, the current-term commit rule and persistent state, then a key-value service on top that survives crashes, split votes and network partitions.",
+      "Raft in Go from the paper: leader election, log replication, the current-term commit rule and persistent state, then a key-value service on top that stays consistent through crashes, network partitions and split-brain scenarios.",
     year: "2024",
     stack: ["Go", "Distributed systems"],
     links: [],
@@ -13,9 +13,9 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    title: "Distributed Postgres",
+    title: "Distributed PostgreSQL sharding proxy",
     summary:
-      "Sharding playground: three Dockerized Postgres shards behind a Go routing proxy that hashes a shard key on a ring, co-locates each tenant's tables and broadcasts reference data to every shard.",
+      "A Go proxy that shards Dockerized Postgres with consistent hashing (150 virtual nodes, MD5), co-locates each tenant's tables, runs concurrent scatter-gather queries, replicates broadcast tables to every shard and coordinates cross-shard transactions with two-phase commit.",
     year: "2026",
     stack: ["Go", "PostgreSQL", "Docker"],
     links: [{ label: "Code", href: "https://github.com/k-amin07/distributed-postgres" }],
