@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import portrait from "@/assets/khizar.jpeg";
 import { Arrow, ExternalArrow, Section, Tags } from "@/components/section";
 import { education, jobs } from "@/content/experience";
 import { projects } from "@/content/projects";
@@ -28,10 +29,9 @@ function Hero() {
     <section className="mx-auto max-w-[1080px] px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
       <div className="flex items-center gap-4">
         <Image
-          src="/images/khizar.jpeg"
+          src={portrait}
           alt="Portrait of Khizar Amin"
-          width={112}
-          height={112}
+          sizes="56px"
           priority
           className="size-14 rounded-full border border-line object-cover"
         />

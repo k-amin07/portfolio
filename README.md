@@ -22,6 +22,7 @@ All content is in `src/content/`. If an entry is missing a field or has a malfor
 | Case studies (list and header facts) | `src/content/work.ts` |
 | Case study body | `src/content/work/<slug>.mdx` |
 | Résumé | `public/resume.pdf` |
+| Profile photo | `src/assets/khizar.jpeg` (square; replace the file, same name) |
 
 ### Start a new job
 
