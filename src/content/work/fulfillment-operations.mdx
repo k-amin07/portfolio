@@ -1,0 +1,44 @@
+A fresh pet-food brand runs kitchens, stores, home delivery and subscriptions. Its item master and inventory live in **NetSuite**, its orders in **Shopify**, its subscriptions in **Ordergroove**, and its drivers in **Onfleet**. Staff were switching between all four to get one order out the door.
+
+They didn't want a new system of record. They wanted the warehouse floor to work, with the systems they already paid for staying the source of truth. I built that as 20 PackageX workflows: block-based flows that run on the floor's phones and scanners, plus scheduled and webhook-driven jobs behind them.
+
+## The shape of it
+
+The first decision mattered most: **no business workflow talks to an outside system directly.** Each system gets one proxy workflow that owns its authentication, routing and error handling. Every other workflow calls the proxy through a PackageX trigger URL, the same way it would call any internal API.
+
+<FulfillmentArchitecture />
+
+That buys three things:
+
+- **Credentials live in exactly one place.** The ERP uses OAuth 2.0 with a JWT signed from a private key (RS256). A scheduled token workflow keeps a fresh token in the shared cache. The ERP proxy checks the expiry on every call and, with under two minutes left, triggers an on-demand twin of the token workflow before it continues. No business flow ever sees a key.
+- **Retries are safe.** The delivery proxy deduplicates task creation on a key stored in the cache, so a retried dispatch never sends two drivers to the same door.
+- **The integration surface is small and testable.** Four proxies, each a generic gateway for its system's verbs, instead of a dozen flows each embedding their own HTTP calls.
+
+## The floor workflows
+
+| Workflow | Trigger | What it does |
+| --- | --- | --- |
+| Pick, Pack & Stage | Interactive | The fulfillment engine: queue → pick (barcode-verified) → pack → rate-shop and buy a label → work-order PDF to a cloud printer → delivery task or pickup-ready → storefront updated. Also handles item swaps, subscription skips, cancellations and refunds. |
+| Will Call | Interactive | Customer pickup: scan the order QR, verify each label, complete shipments, tell the storefront (picked up, or delivered for swapped orders). |
+| Order Lookup | Interactive | A service console that stitches the storefront order, PackageX fulfillment and shipment, and the delivery task and driver into one view, with cancel and refund. |
+| Inventory Adjustment | Interactive | Scan or search an item in the ERP, enter quantity and unit of measure, review, and post an inventory adjustment with a cached reason code. |
+| Assembly Build / Unbuild | Interactive | Mirror-image flows that batch-submit assembly builds to the ERP with per-item success, error and retry. |
+| Cycle Count | Interactive | Count against an open PackageX audit by fuzzy search or barcode (EAN-13 converted to UPC-A). |
+| Cycle Count Weekly Sync | Schedule | Pages ERP item groups by location and creates PackageX audits for the week, due at a fixed local time with DST handled. A closure job cancels stale audits first. |
+| Delivery reverse sync | Webhook | When a driver completes a drop-off, marks the storefront order delivered and completes the PackageX fulfillment and shipment. |
+
+Pick, Pack & Stage is the big one at **391 blocks**. It is a long flow but a linear one for the person holding the scanner: every screen asks one question, and every branch (swap, skip, cancel, pickup instead of delivery) returns to the same spine.
+
+## Closing the loop
+
+<OrderLifecycle />
+
+Ownership is split deliberately. The **storefront** owns the order, so cancellations, refunds and swaps happen there first and are mirrored in PackageX. **PackageX** owns the physical work: picks, parcels, labels, prints. The **delivery provider** owns the last mile. The links between them are stored IDs: storefront GIDs in PackageX fulfillment and shipment metadata, PackageX IDs in the delivery task. When a webhook arrives, the reverse sync can find every record it needs without a search.
+
+The ERP runs in parallel as the source of truth for items and inventory. Lookups go out to it live while staff scan. Adjustments and assembly builds are written back as ERP records. Each week the ERP's item groups become PackageX cycle-count audits.
+
+## What I'd point to
+
+- **Model the client's process, not the software's.** The flows follow how staff already move through a shift. That is why one of them is 391 blocks and still easy to use.
+- **Put the hard parts in one place.** Auth, token refresh, retries and deduplication live in four proxies. Business flows stay readable, and a credential rotation touches one workflow.
+- **Every write is safe to repeat.** Dedupe keys, stored cross-system IDs and status checks before each transition mean a flaky network or a double tap doesn't corrupt anything.
