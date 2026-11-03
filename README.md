@@ -64,7 +64,7 @@ Clients are anonymized on purpose. Describe a client by industry and scale and n
 
 ## Design
 
-- Tokens: `src/app/globals.css` defines every color as a CSS variable, with a dark set for `prefers-color-scheme` and for the toggle (`<html data-theme>`, remembered in `localStorage`).
+- Tokens: `src/app/globals.css` defines every color as a CSS variable. Dark is the default; the toggle switches to light via `<html data-theme>` and the choice is remembered in `localStorage`.
 - Type: Geist Sans and Geist Mono through `next/font`.
 - Case study prose styles: `.prose-case` in `globals.css`.
 

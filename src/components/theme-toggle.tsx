@@ -2,14 +2,12 @@
 
 /**
  * Flips between light and dark and remembers the choice. With no saved
- * choice the site follows the OS setting (handled in globals.css).
+ * choice the site is dark (see globals.css).
  */
 export function ThemeToggle() {
   function toggle() {
     const root = document.documentElement;
-    const current =
-      root.getAttribute("data-theme") ??
-      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const current = root.getAttribute("data-theme") ?? "dark";
     const next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try {

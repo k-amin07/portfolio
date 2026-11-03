@@ -3,39 +3,10 @@
 /*
  * Colour tokens. Everything on the site reads these variables, so light/dark
  * is handled here and nowhere else.
- * Default follows the OS; the toggle pins a choice via <html data-theme>.
+ * Dark is the default. The toggle pins a choice via <html data-theme>, which
+ * the inline script in layout.tsx restores from localStorage before paint.
  */
 :root {
-  --bg: #fbfbfa;
-  --surface: #f2f2f0;
-  --surface-2: #e9e9e6;
-  --fg: #141416;
-  --muted: #55555d;
-  --line: #e2e2de;
-  --line-strong: #b9b9b3;
-  --accent: #2448c9;
-  --accent-soft: #e6ebfb;
-  --accent-fg: #ffffff;
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0d0d0f;
-    --surface: #16161a;
-    --surface-2: #1e1e23;
-    --fg: #ececee;
-    --muted: #a3a3ac;
-    --line: #26262c;
-    --line-strong: #46464f;
-    --accent: #93a9ff;
-    --accent-soft: #1a2142;
-    --accent-fg: #0d0d0f;
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
   --bg: #0d0d0f;
   --surface: #16161a;
   --surface-2: #1e1e23;
@@ -47,6 +18,20 @@
   --accent-soft: #1a2142;
   --accent-fg: #0d0d0f;
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #fbfbfa;
+  --surface: #f2f2f0;
+  --surface-2: #e9e9e6;
+  --fg: #141416;
+  --muted: #55555d;
+  --line: #e2e2de;
+  --line-strong: #b9b9b3;
+  --accent: #2448c9;
+  --accent-soft: #e6ebfb;
+  --accent-fg: #ffffff;
+  color-scheme: light;
 }
 
 @theme inline {
