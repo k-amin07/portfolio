@@ -1,0 +1,57 @@
+Most operations software asks a client to move in: new item master, new order system, new portal, new habits. PackageX takes the opposite position. **Clients keep their ERP, storefront and carriers. The platform sits between them and connects the moving parts**: a NetSuite item master with a Shopify storefront, a Business Central PO with a receiving dock, a carrier label with a cloud printer.
+
+A client can use the platform on its own, through its portal and API. Most use it through **workflows**: small apps built for one job (pick and pack, receiving, a cycle count) that use the platform's APIs underneath. That replaces a one-size-fits-all portal.
+
+<PlatformLayers />
+
+I spent two years on the backend under those workflows, as a Node.js and Prisma engineer on MySQL. Everything a workflow does on the floor ends up in an API I built or worked on.
+
+## What I built and owned
+
+| Area | What that covered |
+| --- | --- |
+| Fulfillments & manifests | Picking, packing and shipping statuses; partial fulfillments; multiple parcels per call; inventory reservation on location levels (or not, per org); internal transfers; partial receiving and "create from remaining quantity"; international shipping with tariff-code validation |
+| Items | Base units of measure and transactional units; fractional quantities; assembly items with bills of materials; alternate names and product numbers; zero-inventory settings; search by name, SKU, GTIN and suffix |
+| Assets | The complete asset management and lifecycle module: creation with serial sequences, assignment to people and locations, maintenance and warranty states, notes for workflows, imports, and fixes for lock contention on the write path |
+| Audits | Cycle counting, including completing individual tasks, metadata, audit creation by SKU, GTIN or UPC, and audit tasks as document resources |
+| Cloud printing | Print stations and jobs, label-size mapping, custom page sizes and DPI, offline-printer reasons, pages-to-print validation, a database listener for job events |
+| Documents & PDF | A documents API with search and categories, plus the PDF template engine: SVG logos, DPI, margin and background error propagation |
+| Imports & batches | Location, user and layout imports with error CSVs; contributions to queue-based batches v2, where each entry runs with its creator's permissions |
+| Integrations | NetSuite connectors for sales orders, partial fulfillments, tax data and purchase orders, before that work moved into workflows |
+
+## Consistency under concurrency
+
+Workflows, scanners and integrations hit the API in parallel, and two requests racing for the same row is normal rather than a corner case. The clearest example was order numbers. Fulfillments and manifests get sequential, human-readable numbers per organization, and parallel creates were occasionally being handed the same one.
+
+The fix borrows the **lease** idea from Facebook's [Scaling Memcache](https://www.usenix.org/conference/nsdi13/technical-sessions/presentation/nishtala) paper. Before reading the counter, a request takes a short-lived lease in Redis with `SET key NX EX 5`. Exactly one caller wins. Others poll every 100 ms until the lease is gone, then try again. The winner reads, increments and writes the counter, then deletes the lease.
+
+<LeaseSequence />
+
+Two properties matter. The **TTL bounds the damage of a crash**: a holder that dies mid-update blocks others for at most five seconds, never forever. And Redis is not trusted alone: a **unique constraint on order numbers in MySQL** turns any remaining race into a clean, retryable error instead of a duplicate.
+
+The same idea handles the paper's other problem, the thundering herd. Inventory levels are looked up by a cached ID. A cache hit returns at once, with no lock. On a miss, only the lease holder creates the level row and fills the cache, then releases the lease, and everyone who was waiting reads the cached ID instead of racing to insert duplicates.
+
+## Making the slow paths fast
+
+### PDF label sheets: about 3.5× faster
+
+PDF generation for label sheets was taking around 53 seconds in production. The renderer downloaded every image element one at a time, even when every label used the same logo URL, and each download had its own 10-second timeout.
+
+The fix is a per-request fetch cache keyed by URL that **shares in-flight requests**, plus a bounded six-lane prefetch of the distinct URLs before rendering starts. Resampled images are cached by source digest and on-page size, so a DPI change doesn't repeat the work either.
+
+| Scenario (100-label sheet, local) | Before | After |
+| --- | --- | --- |
+| Same PNG logo on every label | 6.67 s | 1.83 s |
+| 100 distinct PNG URLs | 7.85 s | 2.17 s |
+| Same PNG logo at 300 DPI | 7.94 s | 2.37 s |
+| Same remote SVG logo | 7.68 s | 1.87 s |
+
+Review found the risks the speedup introduced: memory held for the whole request, prefetch with no request-wide deadline, concurrency capped per request rather than per instance. Each was fixed before release, or deferred to its own ticket with the trade-off written down.
+
+### Asset writes: shorter locks
+
+A batch that moved nine assets to the same location failed with `Lock wait timeout exceeded`. Every move decrements one inventory level and increments another, and the level write was the first statement in a transaction that then hydrated the asset and its relations, so the hottest row stayed locked the longest. I moved the level writes to the end of the transaction, took the relation hydration out of it, and built the response in memory instead of re-reading after the write. The hot row is now locked for a fraction of the time.
+
+## How I work on it
+
+Changes go through a written plan, implementation, and a multi-agent review before release: an informed reviewer with the full context, plus blind reviewers and an auditor that only see the diff. Findings are logged with severity and a fix, and the release isn't cut until they are resolved or explicitly accepted. That is how the PDF change above shipped with its failure modes understood, not just its speedup.

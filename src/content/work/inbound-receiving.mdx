@@ -1,0 +1,53 @@
+A residential care and education provider receives everything at one central dock: vendor shipments against purchase orders, supplies ordered without one, and personal parcels for the people who live across its campus. Receiving staff had to work out, box by box, who or what each package was for.
+
+The goal was a mobile flow for that dock: **photograph a label, work out where the package belongs, verify it, route it, and deliver it**, with a record of every step.
+
+## One photo decides the path
+
+Everything starts with PackageX's shipping-label inference. Staff take one to four photos of a label on an iPad. The best photo is chosen by score (tracking number, carrier, barcode), Google Cloud Vision reads the text, and a model extracts structured fields: recipient, sender, PO, reference and order numbers, carrier and tracking. Recipient and sender are then matched against the organization's contacts.
+
+That result picks one of four paths:
+
+<ReceivingFlow />
+
+| Path | How it's recognized | What happens |
+| --- | --- | --- |
+| PO on the label | An extracted PO number matches an open PO | Auto-match, then reconcile against the packing slip and PO lines |
+| Vendor, no PO | A known vendor sent it but no PO is printed | Staff choose from that vendor's open POs, newest first |
+| Resident parcel | The recipient matches someone in the resident directory | Skip purchasing and inventory: resolve their current location and add the package to a delivery run |
+| Unknown | No confident match | Parked in an exceptions queue for manual matching. The dock keeps moving |
+
+## Six workflows, dock to handoff
+
+| # | Workflow | Trigger | Does |
+| --- | --- | --- | --- |
+| 1 | Employee directory sync | Nightly | Pulls staff from Entra ID through Microsoft Graph and adds, updates or deactivates contacts |
+| 2 | Resident directory sync | Each EMR file drop | Reads the delta file over SFTP (about 3× a day) and upserts residents by ID, never overwriting a per-item override |
+| 3 | PO lookup | Called by 4 and 5 | Read-only Business Central API calls: find a PO by number or vendor, return lines and open quantities |
+| 4 | Label intake | Interactive | Photo, inference, classification. Staff confirm or correct, and the house printed on a label is only a hint against the directory |
+| 5 | Open and verify | Interactive | Count against packing slip and PO lines; record overage, shortage, partial and damage with photos. Route each line to inventory or non-inventory by its line type, asking staff only when no rule can decide |
+| 6 | Delivery run | Interactive | Group staged parcels by destination, build a run, capture acceptance at handoff |
+
+One Entra app registration covers staff SSO, the nightly Graph sync and Business Central access. Business Central has its own API rather than going through Graph, so it needs its own permission and a setup step inside BC. The workflows fetch a token before each call, and the client secret sits in workflow secrets, never in block logic.
+
+## Rules every workflow follows
+
+- **The ERP is read-only.** No workflow writes fulfillment status or closes a PO; purchasing keeps that control.
+- **The EMR feed is the source of truth for where a resident lives.** A staff override applies to that one package only.
+- **An unknown package never blocks the dock.** It goes to the exceptions queue and the next box gets scanned.
+- **No clinical data enters the platform.** Only name, ID and residence come across from the EMR.
+- **The audit trail is free.** Every write through the PackageX API already lands in its logs, so who scanned what, and when, is proof of receipt without a separate activity log.
+
+## The parts that needed care
+
+### Exact matching misses real packages
+
+On the first test label, OCR read **PO015877** as **P015877**, one character short, and an exact lookup would have failed. PO numbers are normalized before matching (prefix stripped, digits compared). Where the ERP's API only supports exact filters, open POs, lines and vendors are synced into the platform frequently and searched there.
+
+### The name on the label can be wrong
+
+Several vendor labels were addressed "ATTN" to a staff member who might no longer work there. For vendor shipments, **vendor and PO outrank the ATTN name**, so packages route to purchasing rather than to someone who has left. For residents it is the other way round: the label's house name is a hint, and the directory decides.
+
+### Ambiguous labels
+
+Vendor labels often carry several numbers: a PO, the vendor's own order number, a reference. Extraction returns all of them in separate fields, and the PO match tries the one the ERP recognizes. Raw OCR text is kept as a fallback for numbers printed in odd places.

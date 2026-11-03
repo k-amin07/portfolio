@@ -1,0 +1,28 @@
+Much of my day-to-day engineering now runs through coding agents: one fixing a ticket in the platform, one drafting a client workflow, one triaging the issue tracker. Each needs its own working directory, its own rules and its own branch. Keeping track of them in terminal tabs on one laptop doesn't scale, and it doesn't work at all from a phone.
+
+So I built a small control plane for them. It's internal and tied to PackageX's setup, so the code stays private, but the design is general.
+
+## What it does
+
+- **Start a session from a profile.** A profile is a working directory plus launch defaults: model, effort, extra directories, plugins and settings. Platform engineering, workflow building and ticket triage each have one, with their own instructions for the agent.
+- **One branch, one worktree.** A platform session can be given a branch, and gets its own git worktree for it. Two agents never share a checkout, so parallel work can't trample itself.
+- **Watch and steer live.** The browser attaches a real terminal to a running session: xterm.js on the page, a pty on the server running the CLI's attach, connected by a WebSocket. Logs, stop, respawn on a new CLI version, resume a past conversation, and remove are one tap each.
+- **Give it context.** Files such as a client spec PDF can be uploaded with the prompt, so a session starts with what it needs.
+- **From the phone.** The UI is phone-first, and the server binds to the local network behind a single access token, so I can check on agents and answer their questions away from my desk.
+- **Start from a ticket.** A skill lists my open issues grouped by release, and starts the right kind of session for the one I pick: a platform worktree on the ticket's branch, or a workflow builder.
+
+<OrchestratorArchitecture />
+
+## Design choices
+
+**Everything goes through the agent CLI.** The server doesn't keep its own model of sessions. It calls the same commands I would type (start in the background, list, attach, logs, stop, respawn), so a session started from the phone, the browser or a terminal is the same session, and nothing drifts out of sync.
+
+**No build step.** The server is plain Node.js with a handful of dependencies: a WebSocket library, node-pty and xterm.js. The web UI is static files. A fresh clone runs after `npm install` and a setup script, and a service installer keeps it running at login.
+
+**Guardrails live in the profile, not in my memory.** The workflow-building profile can only write drafts into the desktop app through its local API. A person reviews, publishes and activates. Secrets are referenced by name and filled in by a human. The platform profile follows the team's branch flow: plan, implement, multi-agent review, release, then open PRs with reviewers.
+
+**Attach is disposable; agents are not.** Each open tab gets its own attach process. Closing the tab kills only that process, never the session. A dropped connection reconnects to the same session.
+
+## Why it matters for forward deployed work
+
+Client work comes in bursts across very different surfaces: an integration bug in the platform, a new floor workflow, a question in a ticket. With this I can run those in parallel, each isolated and following the right rules, and still be the one who decides what ships.

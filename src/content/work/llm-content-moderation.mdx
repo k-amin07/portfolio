@@ -1,0 +1,28 @@
+Online communities moderate by their own rules. A comment that breaks one subreddit's rules can be fine in the next. Human moderators carry that context, but they don't scale; general-purpose toxicity classifiers scale, but they don't know the rules.
+
+My MS thesis at LUMS, advised by **Dr. Ihsan Ayyub Qazi** and **Dr. Zafar Qazi**, asked two questions. Can LLMs reproduce a community's own rule enforcement the way its moderators do? And can they do it at a cost a community could actually pay?
+
+## Measuring the models
+
+I built a dataset from Reddit communities with their written rules and their moderators' actual decisions, then had several LLMs rate the same comments. Ratings ran through the OpenAI Batch API to keep cost down, and every model's verdicts were compared with the human decisions and with each other using inter-rater agreement (Cohen's κ), along with cost and latency per comment.
+
+That gave a baseline: which models agree with moderators, on which kinds of rules, and what each verdict costs. I also fine-tuned GPT-4o-mini on the labelled data to see whether a small, cheap model could stand in for a large one.
+
+## A pipeline that knows the rules
+
+<ModerationPipeline />
+
+The moderation pipeline is a **LangGraph multi-agent graph**. One agent classifies which of the community's rules, if any, a comment touches. Another decides enforcement. A guardrail step checks the output stays within policy and on format, so a model that goes off-script can't take an action on its own.
+
+## Paying for each idea only once
+
+Communities see the same comments again and again: the same insult, the same spam, the same off-topic question. Paying a model to judge each copy is wasted money.
+
+So before the agents run, each comment is embedded with **all-mpnet-base-v2** and looked up in a **RedisVL semantic cache**. If a close enough comment has already been judged, its verdict is reused without a model call. Two details made this work:
+
+- **The cache is scoped per community and per agent.** A hit in one subreddit says nothing about another with different rules, and a classifier's answer isn't an enforcer's.
+- **The similarity threshold is tuned, not guessed.** I swept it on held-out data and picked the point that traded cache hits against agreement with moderators, then measured how much latency and API cost each threshold saved.
+
+## What I took from it
+
+Most of the cost of LLMs in production is repetition, and most of the risk is a model acting outside its brief. Caching by meaning attacks the first, and a graph with an explicit guardrail step attacks the second.
