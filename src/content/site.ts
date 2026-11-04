@@ -37,7 +37,7 @@ export const site = {
   about: [
     "I'm the person who reads the changelog before the release notes. If something is new and shiny (a model that dropped this morning, a kernel flag, a tiling window manager) I have probably installed it, broken my machine with it, and written down how I fixed it.",
     "Some of those write-ups ended up with more stars than my code. I run Arch, by the way.",
-    "Away from the keyboard I box for fun, then undo all of it with baking. My Basque cheesecake is the most reliable thing I ship: burnt on top, creamy inside, zero bug reports. The recipe is [Joshua Weissman's](https://www.joshuaweissman.com/recipes/basque-cheese-cake-recipe); the deployment is mine.",
+    "Away from the keyboard I take boxing lessons for fun, then undo all of it with baking. My Basque cheesecake is the most reliable thing I ship: burnt on top, creamy inside, zero bug reports. The recipe is [Joshua Weissman's](https://www.joshuaweissman.com/recipes/basque-cheese-cake-recipe); the deployment is mine.",
   ],
 
   skills: [
