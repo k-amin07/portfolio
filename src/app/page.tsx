@@ -26,7 +26,7 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="mx-auto max-w-[1080px] px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
+    <section className="mx-auto max-w-[1080px] scroll-mt-16 snap-start px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20">
       <div className="flex items-center gap-4">
         <Image
           src={portrait}
@@ -93,35 +93,25 @@ function Hero() {
 function SelectedWork() {
   return (
     <Section id="work" label="Selected work">
-      <ol className="-mt-6">
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {caseStudies.map((c, i) => (
-          <li key={c.slug} className="border-b border-line last:border-b-0">
+          <li key={c.slug} className={i === 0 ? "sm:col-span-2" : ""}>
             <Link
               href={`/work/${c.slug}`}
-              className="group grid grid-cols-[2rem_1fr] gap-x-3 py-7 sm:grid-cols-[2.5rem_1fr_auto] sm:gap-x-5"
+              className="group flex h-full flex-col rounded-xl border border-line p-5 transition-colors hover:border-accent hover:bg-accent-soft/40"
             >
-              <span className="pt-1 font-mono text-sm text-muted">{String(i + 1).padStart(2, "0")}</span>
-              <div>
-                <p className="eyebrow">
-                  <span className="text-accent">{c.kind}</span>
-                  <span aria-hidden="true"> · </span>
-                  {c.context}
-                </p>
-                <h3 className="mt-2 text-xl font-medium tracking-[-0.01em] text-fg transition-colors group-hover:text-accent sm:text-[1.4rem]">
-                  {c.title}
-                </h3>
-                <p className="mt-2 max-w-[64ch] leading-relaxed text-muted">{c.summary}</p>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent sm:hidden">
-                  Read the case study <Arrow className="size-3.5" />
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <p className="eyebrow !text-accent">{c.kind}</p>
+                <Arrow className="shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
               </div>
-              <span className="hidden pt-8 text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent sm:block">
-                <Arrow />
-              </span>
+              <h3 className="mt-3 text-[1.05rem] font-medium leading-snug tracking-[-0.01em] text-fg transition-colors group-hover:text-accent">
+                {c.title}
+              </h3>
+              <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-muted">{c.summary}</p>
             </Link>
           </li>
         ))}
-      </ol>
+      </ul>
     </Section>
   );
 }
@@ -226,18 +216,14 @@ function Projects() {
   const rest = projects.filter((p) => !p.featured);
   return (
     <Section id="projects" label="Projects">
-      <ul className="grid gap-4 sm:grid-cols-2">
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((p) => (
-          <li key={p.title} className="flex flex-col rounded-xl border border-line p-5 transition-colors hover:border-line-strong sm:odd:last:col-span-2">
+          <li key={p.title} className="flex flex-col rounded-xl border border-line p-5">
             {p.year ? <p className="font-mono text-xs text-muted">{p.year}</p> : null}
             <h3 className="mt-2 font-medium leading-snug text-fg">{p.title}</h3>
-            <p className="mt-2 flex-1 text-[0.95rem] leading-relaxed text-muted">{p.summary}</p>
-            {p.note ? <p className="mt-3 text-xs leading-relaxed text-muted italic">{p.note}</p> : null}
-            <div className="mt-4">
-              <Tags items={p.stack} />
-            </div>
+            <p className="mt-2 line-clamp-4 flex-1 text-sm leading-relaxed text-muted">{p.summary}</p>
             {p.links.length ? (
-              <ul className="mt-4 flex gap-4 text-sm">
+              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                 {p.links.map((l) => (
                   <li key={l.href}>
                     <a href={l.href} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1 text-fg hover:text-accent">
@@ -247,31 +233,25 @@ function Projects() {
                   </li>
                 ))}
               </ul>
+            ) : p.note ? (
+              <p className="mt-4 text-xs leading-relaxed text-muted italic">{p.note.split(". ")[0].replace(/\.$/, "")}.</p>
             ) : null}
           </li>
         ))}
       </ul>
 
       {rest.length ? (
-        <div className="mt-10">
-          <h3 className="eyebrow">Also</h3>
-          <ul className="mt-3 divide-y divide-line">
-            {rest.map((p) => (
-              <li key={p.title} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-4">
-                <a
-                  href={p.links[0]?.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex shrink-0 items-center gap-1 font-medium text-fg hover:text-accent"
-                >
-                  {p.title}
-                  <ExternalArrow className="text-muted group-hover:text-accent" />
-                </a>
-                <span className="text-sm text-muted">{p.summary}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <p className="mt-6 text-sm leading-relaxed text-muted">
+          <span className="eyebrow mr-2">Also</span>
+          {rest.map((p, i) => (
+            <span key={p.title}>
+              {i ? <span aria-hidden="true"> · </span> : null}
+              <a href={p.links[0]?.href} target="_blank" rel="noreferrer" className="link text-fg">
+                {p.title}
+              </a>
+            </span>
+          ))}
+        </p>
       ) : null}
     </Section>
   );
@@ -280,22 +260,27 @@ function Projects() {
 function Writing() {
   return (
     <Section id="writing" label="Writing & guides">
-      <ul className="-mt-4 divide-y divide-line">
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {writing.map((w) => (
           <li key={w.href}>
-            <a href={w.href} target="_blank" rel="noreferrer" className="group grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
-              <div>
-                <p className="eyebrow">
-                  {w.kind} · {w.where}
-                  {w.badge ? <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-accent normal-case tracking-normal">{w.badge}</span> : null}
-                </p>
-                <h3 className="mt-2 inline-flex items-start gap-1.5 font-medium leading-snug text-fg group-hover:text-accent">
-                  {w.title}
-                  <ExternalArrow className="mt-1 shrink-0 text-muted group-hover:text-accent" />
-                </h3>
-                <p className="mt-1.5 max-w-[64ch] text-[0.95rem] leading-relaxed text-muted">{w.summary}</p>
-              </div>
-              <p className="font-mono text-xs text-muted sm:pt-0.5">{w.date}</p>
+            <a
+              href={w.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex h-full flex-col rounded-xl border border-line p-5 transition-colors hover:border-line-strong"
+            >
+              <p className="eyebrow">
+                {w.kind} · {w.where}
+                {w.badge ? (
+                  <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-accent normal-case tracking-normal">{w.badge}</span>
+                ) : null}
+              </p>
+              <h3 className="mt-3 flex items-start gap-1.5 font-medium leading-snug text-fg group-hover:text-accent">
+                <span>{w.title}</span>
+                <ExternalArrow className="mt-1 shrink-0 text-muted group-hover:text-accent" />
+              </h3>
+              <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{w.summary}</p>
+              <p className="mt-3 font-mono text-xs text-muted">{w.date}</p>
             </a>
           </li>
         ))}

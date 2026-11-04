@@ -55,6 +55,18 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/*
+ * Home page sections settle into place when you stop scrolling near one
+ * (the browser's own scroll snapping, no scripts). "proximity" never forces a
+ * snap, so long sections scroll freely. Mouse and trackpad only; touch
+ * scrolling stays untouched. Delete this rule to turn snapping off.
+ */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--fg);

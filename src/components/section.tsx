@@ -11,7 +11,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} aria-labelledby={`${id}-label`} className="scroll-mt-16 border-t border-line">
+    <section id={id} aria-labelledby={`${id}-label`} className="scroll-mt-16 snap-start border-t border-line">
       <div className="mx-auto grid max-w-[1080px] gap-6 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-[180px_1fr] md:gap-10">
         <h2 id={`${id}-label`} className="eyebrow md:sticky md:top-24 md:self-start md:pt-1">
           {label}

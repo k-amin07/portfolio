@@ -7,6 +7,7 @@ const nav = [
   { label: "Experience", href: "/#experience" },
   { label: "Projects", href: "/#projects" },
   { label: "Writing", href: "/#writing" },
+  { label: "About", href: "/#about" },
 ];
 
 export function SiteHeader() {
